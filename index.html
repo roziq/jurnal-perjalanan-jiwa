@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal Perjalanan Jiwa — Quantum Rasa & Ikhlas Tracker</title>
+    <meta name="theme-color" content="#065f46">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="./manifest.json">  
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Lora (untuk nuansa kontemplatif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#FDFCF8',
+                            100: '#F7F4EB',
+                            200: '#EDE7D5',
+                        },
+                        sage: {
+                            50: '#F2F6F3',
+                            100: '#E1EBE4',
+                            200: '#C5D8CB',
+                            500: '#5C7F6B',
+                            600: '#496857',
+                            700: '#395244',
+                            800: '#2A3D33',
+                        },
+                        amberwarm: {
+                            100: '#FEF3C7',
+                            400: '#FBBF24',
+                            500: '#D97706',
+                            600: '#B45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Animasi lembut untuk lingkaran pernapasan koherensi jantung (HRV) */
+        @keyframes breatheInOut {
+            0%, 100% { transform: scale(1); opacity: 0.85; }
+            50% { transform: scale(1.38); opacity: 1; }
+        }
+        .breathing-active {
+            animation: breatheInOut 10s infinite ease-in-out;
+        }
+        /* Transisi tab halus */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Kustomisasi scrollbar halus */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F4EB;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5D8CB;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5C7F6B;
+        }
+    </style>
+</head>
+<body class="bg-cream-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-sage-200 selection:text-sage-800">
+
+    <!-- Toast Notification (Pengganti alert() yang ramah & menenangkan) -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- Header Aplikasi -->
+    <header class="bg-cream-100/90 backdrop-blur-md border-b border-cream-200 sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-sage-600 text-cream-50 flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-seedling text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif font-semibold text-lg sm:text-xl text-sage-800 leading-tight">Jurnal Perjalanan Jiwa</h1>
+                    <p class="text-xs text-slate-500">Salam hangat, <span class="font-medium text-sage-700">Sahabat Perjalanan Jiwa</span></p>
+                </div>
+            </div>
+
+            <!-- Indikator Hari Fermentasi Mini di Header -->
+            <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-2xl border border-cream-200 shadow-sm">
+                <i class="fa-solid fa-hourglass-half text-amberwarm-500 text-xs"></i>
+                <span class="text-xs font-medium text-slate-700">Hari ke-<span id="headerDayCount" class="font-bold text-sage-700">1</span>/40</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 pt-5 pb-28 sm:pb-12 space-y-6">
+
+        <!-- 1. SAKLAR UTAMA: THINK HARDER ACTIVATED (PINDAH DARI KEPALA KE HATI) -->
+        <section id="thinkHarderCard" class="rounded-3xl p-5 sm:p-6 transition-all duration-500 border shadow-sm bg-white border-cream-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-sage-50 text-sage-700 border border-sage-200">
+                        <span id="statusDot" class="w-2 h-2 rounded-full bg-slate-400 transition-colors"></span>
+                        <span id="statusLabel">Mode Kepala (Logika / Analisa)</span>
+                    </div>
+                    <h2 class="font-serif text-lg sm:text-xl font-semibold text-slate-800 pt-1">
+                        Saklar <span class="italic text-sage-700">Think Harder</span> (Hati & Kesadaran)
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Saat kepala penuh atau mulai mengeluh, geser kesadaran dari kepala ke hati. Aktifkan koherensi jantung sebelum menulis jurnal.
+                    </p>
+                </div>
+
+                <!-- Tombol Toggle Saklar -->
+                <div class="flex items-center gap-3 self-start sm:self-center shrink-0">
+                    <button id="toggleThinkHarderBtn" onclick="toggleThinkHarder()" class="group relative inline-flex items-center gap-3 px-5 py-3 rounded-2xl font-medium text-sm transition-all duration-300 shadow-sm bg-sage-600 hover:bg-sage-700 text-white active:scale-95">
+                        <i id="thinkHarderIcon" class="fa-solid fa-heart-pulse text-amberwarm-400"></i>
+                        <span id="thinkHarderBtnText">Aktifkan Think Harder</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel Panduan Pernapasan Koherensi Jantung (HRV 60 Detik) -->
+            <div id="hrvBreathingPanel" class="hidden mt-5 pt-5 border-t border-sage-200/70">
+                <div class="bg-sage-50/80 rounded-2xl p-5 flex flex-col items-center text-center space-y-4">
+                    <div class="flex items-center justify-between w-full text-xs text-sage-700 font-medium">
+                        <span><i class="fa-solid fa-wave-square mr-1.5"></i>Koherensi Jantung (HRV 60 Detik)</span>
+                        <span id="hrvTimerDisplay" class="font-mono bg-white px-2.5 py-1 rounded-lg border border-sage-200">01:00</span>
+                    </div>
+
+                    <!-- Lingkaran Animasi Napas -->
+                    <div class="relative w-36 h-36 flex items-center justify-center my-2">
+                        <div id="breathingCircleOuter" class="absolute inset-0 rounded-full bg-sage-200/60"></div>
+                        <div id="breathingCircleInner" class="relative w-24 h-24 rounded-full bg-sage-600 text-white flex flex-col items-center justify-center shadow-md transition-all">
+                            <span id="breathInstruction" class="text-xs font-semibold tracking-wide uppercase">Siap</span>
+                            <span id="breathSecondCounter" class="text-lg font-bold font-mono mt-0.5">5</span>
+                        </div>
+                    </div>
+
+                    <p id="hrvGuidanceText" class="text-xs sm:text-sm text-slate-600 max-w-md">
+                        Letakkan perhatian lembut di area dada/jantung. Tarik napas perlahan 5 detik, embuskan 5 detik tanpa terburu-buru.
+                    </p>
+
+                    <div class="flex flex-wrap items-center justify-center gap-2.5">
+                        <button id="startHrvBtn" onclick="startHrvSession()" class="px-4 py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-medium transition shadow-sm">
+                            <i class="fa-solid fa-play mr-1.5"></i>Mulai Napas Koheren
+                        </button>
+                        <button id="stopHrvBtn" onclick="stopHrvSession()" class="hidden px-4 py-2 rounded-xl bg-white hover:bg-cream-100 text-slate-700 border border-slate-300 text-xs font-medium transition">
+                            <i class="fa-solid fa-stop mr-1.5"></i>Selesai Lebih Awal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigasi Tab Desktop & Tablet -->
+        <nav class="hidden sm:flex bg-cream-100 p-1.5 rounded-2xl border border-cream-200 gap-1" aria-label="Navigasi Utama">
+            <button onclick="switchTab('tab-3r')" data-tab="tab-3r" class="nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all bg-white text-sage-800 shadow-sm">
+                <i class="fa-solid fa-compass mr-1.5 text-sage-600"></i>Selaras 3R
+            </button>
+            <button onclick="switchTab('tab-ulangan')" data-tab="tab-ulangan" class="nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-sage-800">
+                <i class="fa-solid fa-feather-pointed mr-1.5 text-amberwarm-500"></i>Catatan Ulangan
+            </button>
+            <button onclick="switchTab('tab-ritual')" data-tab="tab-ritual" class="nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-sage-800">
+                <i class="fa-solid fa-moon mr-1.5 text-indigo-500"></i>Ritual Tidur & Pagi
+            </button>
+            <button onclick="switchTab('tab-fermentasi')" data-tab="tab-fermentasi" class="nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-sage-800">
+                <i class="fa-solid fa-chart-line mr-1.5 text-sage-600"></i>Fermentasi Jiwa
+            </button>
+        </nav>
+
+        <!-- =================================================================== -->
+        <!-- TAB 1: PENYELARASAN 3R (RAGA, RASIO, RASA) - CHECK-IN HARIAN        -->
+        <!-- =================================================================== -->
+        <section id="tab-3r" class="tab-panel active space-y-5">
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-cream-200 pb-4">
+                    <div>
+                        <h3 class="font-serif text-lg font-semibold text-sage-800">Penyelarasan 3R Hari Ini</h3>
+                        <p class="text-xs text-slate-500">Menyatukan energi Raga, Rasio, dan Rasa agar bergerak selaras.</p>
+                    </div>
+                    <span id="todayDateBadge" class="text-xs font-medium bg-cream-100 text-slate-700 px-3 py-1.5 rounded-xl self-start sm:self-center"></span>
+                </div>
+
+                <!-- 1. RAGA -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-semibold text-sage-800 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-sage-100 text-sage-700 flex items-center justify-center text-xs font-bold">1</span>
+                            Raga (Menertibkan Wadah Fisik)
+                        </label>
+                        <span class="text-xs text-slate-400">Pilih yang sudah dilakukan</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="ragaChecklist">
+                        <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-cream-200 bg-cream-50/60 hover:bg-sage-50/60 cursor-pointer transition">
+                            <input type="checkbox" value="Gerak / Olahraga Ringan" class="raga-check w-4 h-4 accent-sage-600 rounded">
+                            <span class="text-xs sm:text-sm text-slate-700">Gerak / Olahraga</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-cream-200 bg-cream-50/60 hover:bg-sage-50/60 cursor-pointer transition">
+                            <input type="checkbox" value="Istirahat & Napas Cukup" class="raga-check w-4 h-4 accent-sage-600 rounded">
+                            <span class="text-xs sm:text-sm text-slate-700">Istirahat & Jeda Cukup</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3.5 rounded-2xl border border-cream-200 bg-cream-50/60 hover:bg-sage-50/60 cursor-pointer transition">
+                            <input type="checkbox" value="Detoks Algoritma Sosmed" class="raga-check w-4 h-4 accent-sage-600 rounded">
+                            <span class="text-xs sm:text-sm text-slate-700">Detoks Algoritma Sosmed</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2. RASIO -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <label for="rasioInput" class="text-sm font-semibold text-sage-800 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-sage-100 text-sage-700 flex items-center justify-center text-xs font-bold">2</span>
+                            Rasio (Niat & Fokus Hari Ini)
+                        </label>
+                        <span class="text-xs text-slate-400">Tanpa kata "tapi..."</span>
+                    </div>
+                    <textarea id="rasioInput" rows="3" oninput="checkBlockerWords()" placeholder="Tuliskan apa yang sungguh-sungguh kamu inginkan & fokuskan hari ini (bukan sekadar ikut-ikutan orang lain)..." class="w-full rounded-2xl border border-cream-200 bg-cream-50/50 p-3.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sage-500/40 focus:border-sage-500 transition"></textarea>
+                    
+                    <!-- Peringatan Lembut Detektor Kata Penghambat -->
+                    <div id="blockerWordAlert" class="hidden rounded-2xl bg-amberwarm-100/80 border border-amberwarm-400/50 p-3.5 text-xs text-amberwarm-600 flex items-start gap-2.5">
+                        <i class="fa-solid fa-sparkles mt-0.5 text-amberwarm-500"></i>
+                        <div>
+                            <p class="font-semibold">Pengingat Lembut untuk Rasio:</p>
+                            <p id="blockerWordMessage" class="mt-0.5 text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. RASA -->
+                <div class="space-y-3">
+                    <label class="text-sm font-semibold text-sage-800 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-sage-100 text-sage-700 flex items-center justify-center text-xs font-bold">3</span>
+                        Rasa (Suasana Batin Saat Ini)
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="rasaSelector">
+                        <button type="button" onclick="selectRasa('Tenang', this)" class="rasa-btn p-3 rounded-2xl border border-cream-200 bg-cream-50/50 hover:border-sage-500 text-center transition flex flex-col items-center gap-1.5">
+                            <span class="text-xl">🌿</span>
+                            <span class="text-xs font-medium text-slate-700">Tenang</span>
+                        </button>
+                        <button type="button" onclick="selectRasa('Syukur', this)" class="rasa-btn p-3 rounded-2xl border border-cream-200 bg-cream-50/50 hover:border-sage-500 text-center transition flex flex-col items-center gap-1.5">
+                            <span class="text-xl">☀️</span>
+                            <span class="text-xs font-medium text-slate-700">Syukur</span>
+                        </button>
+                        <button type="button" onclick="selectRasa('Ikhlas', this)" class="rasa-btn p-3 rounded-2xl border border-cream-200 bg-cream-50/50 hover:border-sage-500 text-center transition flex flex-col items-center gap-1.5">
+                            <span class="text-xl">🕊️</span>
+                            <span class="text-xs font-medium text-slate-700">Ikhlas</span>
+                        </button>
+                        <button type="button" onclick="selectRasa('Lelah / Perlu Jeda', this)" class="rasa-btn p-3 rounded-2xl border border-cream-200 bg-cream-50/50 hover:border-sage-500 text-center transition flex flex-col items-center gap-1.5">
+                            <span class="text-xl">🍃</span>
+                            <span class="text-xs font-medium text-slate-700">Perlu Jeda</span>
+                        </button>
+                        <button type="button" onclick="selectRasa('Sedang Berproses', this)" class="rasa-btn col-span-2 sm:col-span-1 p-3 rounded-2xl border border-cream-200 bg-cream-50/50 hover:border-sage-500 text-center transition flex flex-col items-center gap-1.5">
+                            <span class="text-xl">🌱</span>
+                            <span class="text-xs font-medium text-slate-700">Berproses</span>
+                        </button>
+                    </div>
+
+                    <!-- Skala Koherensi Batin -->
+                    <div class="pt-2 space-y-1.5">
+                        <div class="flex justify-between text-xs text-slate-600">
+                            <span>Tingkat Keselarasan Hati & Pikiran</span>
+                            <span class="font-semibold text-sage-700"><span id="coherenceValue">7</span> / 10</span>
+                        </div>
+                        <input type="range" id="coherenceSlider" min="1" max="10" value="7" oninput="document.getElementById('coherenceValue').textContent = this.value" class="w-full accent-sage-600 cursor-pointer">
+                        <div class="flex justify-between text-[11px] text-slate-400">
+                            <span>Masih riuh di kepala</span>
+                            <span>Selaras & lapang</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Simpan 3R -->
+                <div class="pt-2">
+                    <button onclick="save3REntry()" class="w-full py-3.5 px-5 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-medium text-sm shadow-sm transition active:scale-[0.99] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>Simpan Penyelarasan 3R Hari Ini</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 2: CATATAN "ULANGAN & PEMBERIAN MAKNA"                          -->
+        <!-- =================================================================== -->
+        <section id="tab-ulangan" class="tab-panel space-y-5">
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-5">
+                <div class="border-b border-cream-200 pb-4">
+                    <h3 class="font-serif text-lg font-semibold text-sage-800">Ubah "Ujian" Menjadi "Ulangan"</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Ketika pemicu (trigger) muncul di rumah, jalan, atau kantor, catat sebagai data dan beri makna baru dari hati.</p>
+                </div>
+
+                <!-- Konteks / Lokasi Pemicu -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500">Konteks Kejadian</label>
+                    <div class="flex flex-wrap gap-2" id="contextTags">
+                        <button type="button" onclick="selectContext('Keluarga / Pasangan', this)" class="ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-sage-500 bg-sage-50 text-sage-800 transition">Keluarga / Pasangan</button>
+                        <button type="button" onclick="selectContext('Pekerjaan / Rezeki', this)" class="ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-cream-200 bg-cream-50 text-slate-600 hover:border-sage-400 transition">Pekerjaan / Rezeki</button>
+                        <button type="button" onclick="selectContext('Perjalanan / Macet', this)" class="ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-cream-200 bg-cream-50 text-slate-600 hover:border-sage-400 transition">Perjalanan / Macet</button>
+                        <button type="button" onclick="selectContext('Sosmed / Berita', this)" class="ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-cream-200 bg-cream-50 text-slate-600 hover:border-sage-400 transition">Sosmed / Berita</button>
+                    </div>
+                </div>
+
+                <!-- 1. Kejadian / Data Objektif -->
+                <div class="space-y-1.5">
+                    <label for="ulanganEvent" class="text-sm font-semibold text-sage-800">1. Kejadian / Data (Readiness)</label>
+                    <p class="text-xs text-slate-500">Catat faktanya saja secara objektif tanpa drama atau keluhan.</p>
+                    <textarea id="ulanganEvent" rows="2" placeholder="Contoh: Rencana pertemuan tertunda 1 jam karena jalan macet / ada perbedaan pendapat di rumah..." class="w-full rounded-2xl border border-cream-200 bg-cream-50/50 p-3.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-sage-500/40"></textarea>
+                </div>
+
+                <!-- 2. Respon Pola Lama vs Pola Baru -->
+                <div class="space-y-2.5">
+                    <label class="text-sm font-semibold text-sage-800">2. Kesadaran Respon Diri</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <button type="button" onclick="selectPattern('Sempat terpicu pola lama (Sadari & terima)', this)" class="pattern-btn p-3.5 rounded-2xl border border-cream-200 bg-cream-50/50 text-left transition hover:border-amberwarm-400">
+                            <div class="text-xs font-semibold text-slate-800">Sempat Terpicu Pola Lama</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">Tidak apa-apa, sadari saja tanpa memarahi diri sendiri.</div>
+                        </button>
+                        <button type="button" onclick="selectPattern('Berhasil menjeda & merespon sebagai Orang Baru', this)" class="pattern-btn p-3.5 rounded-2xl border border-cream-200 bg-cream-50/50 text-left transition hover:border-sage-500">
+                            <div class="text-xs font-semibold text-sage-800">Merespon Sebagai Orang Baru</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">Hati tetap tenang dan tidak terseret emosi.</div>
+                        </button>
+                    </div>
+
+                    <!-- Kotak Pengingat Anti-Self-Blame -->
+                    <div class="bg-sage-50/80 border border-sage-200/80 rounded-2xl p-3 flex items-center justify-between gap-3">
+                        <p class="text-xs text-sage-800 italic">"Jika masih kembali ke pola lama, jangan marahi dirimu. Ulangan memang diulang sampai kita naik kelas."</p>
+                        <button type="button" onclick="showToast('Peluk dirimu dengan ikhlas. Kesadaranmu hari ini sudah merupakan langkah maju.', 'sage')" class="shrink-0 px-3 py-1.5 rounded-xl bg-white border border-sage-200 text-xs font-medium text-sage-700 hover:bg-sage-100 transition">
+                            Sadari & Terima
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Makna Baru dari Hati -->
+                <div class="space-y-1.5">
+                    <label for="ulanganMeaning" class="text-sm font-semibold text-sage-800">3. Makna Baru dari Hati (<span class="italic">Think Harder</span>)</label>
+                    <p class="text-xs text-slate-500">Makna menenangkan apa yang kamu pilih untuk kejadian ini?</p>
+                    <textarea id="ulanganMeaning" rows="3" placeholder="Contoh: Mungkin penundaan ini cara Tuhan memberiku waktu istirahat sejenak, atau pasangan sedang menjadi guru kesabaranku..." class="w-full rounded-2xl border border-cream-200 bg-cream-50/50 p-3.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-sage-500/40"></textarea>
+                </div>
+
+                <button onclick="saveUlanganEntry()" class="w-full py-3.5 px-5 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-medium text-sm shadow-sm transition active:scale-[0.99] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span>Simpan Catatan Ulangan & Makna</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 3: RITUAL TIDUR & NIAT BANGUN PAGI (SUBCONSCIOUS RE-PROGRAMMING) -->
+        <!-- =================================================================== -->
+        <section id="tab-ritual" class="tab-panel space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Kartu Pengantar Tidur -->
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-cream-200 pb-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-slate-800 text-amberwarm-400 flex items-center justify-center">
+                                <i class="fa-solid fa-moon"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-base font-semibold text-slate-800">Ritual Pengantar Tidur</h3>
+                                <p class="text-xs text-slate-500">Bersihkan rekaman keluhan sebelum masuk alam bawah sadar.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            <label class="text-xs font-semibold text-sage-800 block">3 Hal yang Disyukuri Hari Ini</label>
+                            <input type="text" id="gratitude1" placeholder="1. Syukur pertama..." class="w-full rounded-xl border border-cream-200 bg-cream-50/50 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-sage-500">
+                            <input type="text" id="gratitude2" placeholder="2. Syukur kedua..." class="w-full rounded-xl border border-cream-200 bg-cream-50/50 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-sage-500">
+                            <input type="text" id="gratitude3" placeholder="3. Syukur ketiga..." class="w-full rounded-xl border border-cream-200 bg-cream-50/50 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-sage-500">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label for="releaseLoad" class="text-xs font-semibold text-sage-800 block">Pelepasan Beban & Kepasrahan (Ikhlas)</label>
+                            <textarea id="releaseLoad" rows="2" placeholder="Urusan apa yang ingin kamu serahkan sepenuhnya kepada Tuhan malam ini agar tidurmu pulas?" class="w-full rounded-xl border border-cream-200 bg-cream-50/50 p-3 text-xs sm:text-sm focus:outline-none focus:border-sage-500"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="saveSleepRitual()" class="w-full py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-900 text-cream-50 text-xs sm:text-sm font-medium transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-moon text-amberwarm-400"></i>
+                        <span>Simpan & Lepaskan Hari Ini</span>
+                    </button>
+                </div>
+
+                <!-- Kartu Niat Bangun Pagi -->
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-cream-200 pb-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-amberwarm-100 text-amberwarm-600 flex items-center justify-center">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-base font-semibold text-slate-800">Niat Bangun Pagi</h3>
+                                <p class="text-xs text-slate-500">Menyambut hari dengan kesadaran Orang Baru.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-cream-100/70 rounded-2xl p-3.5 text-xs text-slate-600 leading-relaxed">
+                            Jika saat bangun pagi terasa berat atau kurang bersemangat, sadari saja tanpa melawannya. Arahkan niat lembut untuk menikmati perjalanan hari ini.
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label for="morningIntention" class="text-xs font-semibold text-sage-800 block">Kalimat Kesadaran Pagi Ini</label>
+                            <textarea id="morningIntention" rows="4" placeholder="Contoh: Ya Tuhan, hari ini aku memilih hadir sepenuhnya dengan hati yang lapang, menyelaraskan langkah dan rasa, serta menerima setiap kejutan baik-Mu..." class="w-full rounded-xl border border-cream-200 bg-cream-50/50 p-3.5 text-xs sm:text-sm focus:outline-none focus:border-sage-500"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="saveMorningRitual()" class="w-full py-3 px-4 rounded-2xl bg-amberwarm-500 hover:bg-amberwarm-600 text-white text-xs sm:text-sm font-medium transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-spa"></i>
+                        <span>Tetapkan Niat Pagi</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 4: PROGRES "FERMENTASI JIWA" & RIWAYAT JURNAL                   -->
+        <!-- =================================================================== -->
+        <section id="tab-fermentasi" class="tab-panel space-y-5">
+            <!-- Kartu Visualisasi Fermentasi 40 Hari -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="font-serif text-lg font-semibold text-sage-800">Progres Fermentasi Jiwa (40 Hari)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Perubahan tidak dipaksa instan. Setiap catatan harian adalah ragi kesadaran yang mematangkan jiwamu.</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-center">
+                        <span class="px-3 py-1.5 rounded-xl bg-sage-50 text-sage-800 border border-sage-200 text-xs font-semibold">
+                            <span id="uniqueDaysCount">0</span> / 40 Hari Berlatih
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Grid 40 Titik Hari Latihan -->
+                <div id="fermentationGrid" class="grid grid-cols-8 sm:grid-cols-10 gap-2 pt-2">
+                    <!-- Diisi oleh JavaScript -->
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-cream-200 text-xs text-slate-500">
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-md bg-sage-600 inline-block"></span> Hari Terisi</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-md bg-cream-100 border border-cream-200 inline-block"></span> Ruang Bertumbuh</span>
+                    </div>
+                    <span>Total Refleksi Tersimpan: <strong id="totalEntriesCount" class="text-slate-700">0</strong></span>
+                </div>
+            </div>
+
+            <!-- Kontrol Riwayat & Ekspor/Impor JSON -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-cream-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-200 pb-4">
+                    <div>
+                        <h3 class="font-serif text-lg font-semibold text-sage-800">Arsip Perjalanan Jiwa</h3>
+                        <p class="text-xs text-slate-500">Tersimpan aman di perangkatmu (LocalStorage).</p>
+                    </div>
+
+                    <!-- Tombol Ekspor & Impor JSON -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="exportDataJSON()" class="px-3.5 py-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-slate-700 text-xs font-medium transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download text-sage-600"></i>Ekspor JSON
+                        </button>
+                        <label class="px-3.5 py-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-slate-700 text-xs font-medium transition flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-upload text-amberwarm-600"></i>Impor JSON
+                            <input type="file" id="importFileInput" accept=".json" onchange="importDataJSON(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filter & Pencarian Riwayat -->
+                <div class="flex flex-col sm:flex-row gap-2.5">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="searchJournalInput" oninput="renderJournalList()" placeholder="Cari catatan, niat, atau makna baru..." class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-xs sm:text-sm focus:outline-none focus:border-sage-500">
+                    </div>
+                    <select id="filterTypeSelect" onchange="renderJournalList()" class="rounded-xl border border-cream-200 bg-cream-50/50 px-3.5 py-2.5 text-xs sm:text-sm text-slate-700 focus:outline-none focus:border-sage-500">
+                        <option value="ALL">Semua Kategori</option>
+                        <option value="3R">Penyelarasan 3R</option>
+                        <option value="ULANGAN">Catatan Ulangan</option>
+                        <option value="TIDUR">Ritual Tidur</option>
+                        <option value="PAGI">Niat Pagi</option>
+                    </select>
+                </div>
+
+                <!-- Daftar Entri Jurnal -->
+                <div id="journalListContainer" class="space-y-3 pt-1">
+                    <!-- Diisi dinamis oleh JavaScript -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar Khusus Mobile -->
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-cream-200 z-40 px-2 py-1.5 flex justify-around items-center shadow-lg">
+        <button onclick="switchTab('tab-3r')" data-tab="tab-3r" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-sage-700 font-semibold w-1/4">
+            <i class="fa-solid fa-compass text-base mb-0.5"></i>
+            <span class="text-[10px]">Selaras 3R</span>
+        </button>
+        <button onclick="switchTab('tab-ulangan')" data-tab="tab-ulangan" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-500 w-1/4">
+            <i class="fa-solid fa-feather-pointed text-base mb-0.5"></i>
+            <span class="text-[10px]">Ulangan</span>
+        </button>
+        <button onclick="switchTab('tab-ritual')" data-tab="tab-ritual" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-500 w-1/4">
+            <i class="fa-solid fa-moon text-base mb-0.5"></i>
+            <span class="text-[10px]">Ritual</span>
+        </button>
+        <button onclick="switchTab('tab-fermentasi')" data-tab="tab-fermentasi" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-500 w-1/4">
+            <i class="fa-solid fa-chart-line text-base mb-0.5"></i>
+            <span class="text-[10px]">Fermentasi</span>
+        </button>
+    </nav>
+
+    <!-- JavaScript Logika Aplikasi -->
+    <script>
+        // =========================================================================
+        // 1. STATE & INISIALISASI PENYIMPANAN LOKAL (LOCALSTORAGE)
+        // =========================================================================
+        const STORAGE_KEY = 'jurnal_perjalanan_jiwa_v1';
+
+        let appState = {
+            thinkHarderActive: false,
+            selectedRasa: '',
+            selectedContext: 'Keluarga / Pasangan',
+            selectedPattern: '',
+            entries: []
+        };
+
+        // Variabel untuk sesi pernapasan HRV 60 detik
+        let hrvInterval = null;
+        let hrvSecondsLeft = 60;
+
+        // Muat data saat halaman dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            updateTodayDateBadge();
+            renderFermentationProgress();
+            renderJournalList();
+        });
+
+        function loadFromStorage() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed.entries)) {
+                        appState.entries = parsed.entries;
+                    }
+                }
+            } catch (e) {
+                console.error('Gagal memuat data lokal:', e);
+            }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    entries: appState.entries
+                }));
+                renderFermentationProgress();
+                renderJournalList();
+            } catch (e) {
+                showToast('Gagal menyimpan ke penyimpanan perangkat.', 'amber');
+            }
+        }
+
+        function updateTodayDateBadge() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('todayDateBadge').textContent = now.toLocaleDateString('id-ID', options);
+        }
+
+        // =========================================================================
+        // 2. SISTEM NOTIFIKASI HALUS (TOAST - PENGGANTI ALERT)
+        // =========================================================================
+        function showToast(message, tone = 'sage') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const bgClass = tone === 'amber' 
+                ? 'bg-amberwarm-100 border-amberwarm-400 text-amberwarm-600' 
+                : 'bg-sage-800 border-sage-700 text-cream-50';
+            const iconClass = tone === 'amber' ? 'fa-circle-info' : 'fa-spa text-amberwarm-400';
+
+            toast.className = `pointer-events-auto flex items-start gap-3 p-3.5 rounded-2xl border shadow-lg text-xs sm:text-sm transition-all duration-300 transform translate-y-0 opacity-100 ${bgClass}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${iconClass} mt-0.5 text-base"></i>
+                <p class="flex-1 leading-relaxed">${message}</p>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-8px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3800);
+        }
+
+        // =========================================================================
+        // 3. NAVIGASI TAB RESPONSIF (DESKTOP & MOBILE)
+        // =========================================================================
+        function switchTab(tabId) {
+            // Sembunyikan semua panel
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            // Tampilkan panel terpilih
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+
+            // Update tombol navigasi desktop
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.className = 'nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all bg-white text-sage-800 shadow-sm';
+                } else {
+                    btn.className = 'nav-btn flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-sage-800';
+                }
+            });
+
+            // Update tombol navigasi mobile
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.className = 'mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-sage-700 font-semibold w-1/4';
+                } else {
+                    btn.className = 'mobile-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-500 w-1/4';
+                }
+            });
+        }
+
+        // =========================================================================
+        // 4. SAKLAR "THINK HARDER ACTIVATED" & PERNAPASAN KOHERENSI JANTUNG (HRV)
+        // =========================================================================
+        function toggleThinkHarder() {
+            appState.thinkHarderActive = !appState.thinkHarderActive;
+            
+            const card = document.getElementById('thinkHarderCard');
+            const dot = document.getElementById('statusDot');
+            const label = document.getElementById('statusLabel');
+            const btn = document.getElementById('toggleThinkHarderBtn');
+            const btnText = document.getElementById('thinkHarderBtnText');
+            const panel = document.getElementById('hrvBreathingPanel');
+
+            if (appState.thinkHarderActive) {
+                card.classList.remove('bg-white', 'border-cream-200');
+                card.classList.add('bg-sage-50/70', 'border-sage-500/40');
+                dot.classList.remove('bg-slate-400');
+                dot.classList.add('bg-emerald-500', 'animate-pulse');
+                label.textContent = 'Think Harder Activated (Mode Hati & Kesadaran)';
+                btn.classList.remove('bg-sage-600', 'hover:bg-sage-700');
+                btn.classList.add('bg-amberwarm-500', 'hover:bg-amberwarm-600');
+                btnText.textContent = 'Think Harder: ON';
+                panel.classList.remove('hidden');
+                showToast('Think Harder Activated! Pindahkan kesadaran dari kepala ke hati.', 'sage');
+            } else {
+                stopHrvSession();
+                card.classList.add('bg-white', 'border-cream-200');
+                card.classList.remove('bg-sage-50/70', 'border-sage-500/40');
+                dot.classList.add('bg-slate-400');
+                dot.classList.remove('bg-emerald-500', 'animate-pulse');
+                label.textContent = 'Mode Kepala (Logika / Analisa)';
+                btn.classList.add('bg-sage-600', 'hover:bg-sage-700');
+                btn.classList.remove('bg-amberwarm-500', 'hover:bg-amberwarm-600');
+                btnText.textContent = 'Aktifkan Think Harder';
+                panel.classList.add('hidden');
+            }
+        }
+
+        function startHrvSession() {
+            if (hrvInterval) clearInterval(hrvInterval);
+            hrvSecondsLeft = 60;
+            
+            document.getElementById('startHrvBtn').classList.add('hidden');
+            document.getElementById('stopHrvBtn').classList.remove('hidden');
+            document.getElementById('breathingCircleOuter').classList.add('breathing-active');
+
+            updateHrvUi();
+
+            hrvInterval = setInterval(() => {
+                hrvSecondsLeft--;
+                if (hrvSecondsLeft <= 0) {
+                    stopHrvSession(true);
+                } else {
+                    updateHrvUi();
+                }
+            }, 1000);
+        }
+
+        function updateHrvUi() {
+            const mins = String(Math.floor(hrvSecondsLeft / 60)).padStart(2, '0');
+            const secs = String(hrvSecondsLeft % 60).padStart(2, '0');
+            document.getElementById('hrvTimerDisplay').textContent = `${mins}:${secs}`;
+
+            // Siklus 10 detik: 5 detik tarik napas, 5 detik embuskan napas
+            const elapsed = 60 - hrvSecondsLeft;
+            const cyclePos = elapsed % 10;
+            const instructionEl = document.getElementById('breathInstruction');
+            const counterEl = document.getElementById('breathSecondCounter');
+
+            if (cyclePos < 5) {
+                instructionEl.textContent = 'Tarik Napas';
+                counterEl.textContent = 5 - cyclePos;
+            } else {
+                instructionEl.textContent = 'Embuskan';
+                counterEl.textContent = 10 - cyclePos;
+            }
+        }
+
+        function stopHrvSession(completed = false) {
+            if (hrvInterval) {
+                clearInterval(hrvInterval);
+                hrvInterval = null;
+            }
+            document.getElementById('startHrvBtn').classList.remove('hidden');
+            document.getElementById('stopHrvBtn').classList.add('hidden');
+            document.getElementById('breathingCircleOuter').classList.remove('breathing-active');
+            document.getElementById('hrvTimerDisplay').textContent = '01:00';
+            document.getElementById('breathInstruction').textContent = 'Siap';
+            document.getElementById('breathSecondCounter').textContent = '5';
+
+            if (completed) {
+                showToast('Alhamdulillah, 60 detik koherensi jantung selesai. Detak jantung & rasa kini lebih jernih.', 'sage');
+            }
+        }
+
+        // =========================================================================
+        // 5. FITUR PENYELARASAN 3R & DETEKTOR KATA PENGHAMBAT
+        // =========================================================================
+        function checkBlockerWords() {
+            const text = document.getElementById('rasioInput').value.toLowerCase();
+            const alertBox = document.getElementById('blockerWordAlert');
+            const messageEl = document.getElementById('blockerWordMessage');
+
+            const blockers = [
+                { word: 'tapi', tip: 'Terdeteksi kata <strong>"tapi"</strong>. Kata ini sering membatalkan niat baikmu sendiri. Coba ganti dengan kalimat yang utuh dan selaras.' },
+                { word: 'susah', tip: 'Terdeteksi kata <strong>"susah"</strong>. Coba ubah sudut pandangnya menjadi "sedang berproses" atau "sedang belajar menyelaraskan".' },
+                { word: 'takut', tip: 'Terdeteksi kata <strong>"takut"</strong>. Sadari rasa takutnya tanpa melawannya, lalu arahkan kembali perhatian pada apa yang kamu harapkan.' },
+                { word: 'mengeluh', tip: 'Terdeteksi nada <strong>keluhan</strong>. Ingat pesan Mas Nunu: masalah tidak untuk dibahas, cukup dicatat lalu arahkan fokus ke solusi hati.' },
+                { word: 'sulit', tip: 'Terdeteksi kata <strong>"sulit"</strong>. Tarik napas sejenak, pindah ke mode hati agar terasa lebih ringan.' }
+            ];
+
+            const found = blockers.find(b => new RegExp(`\\b${b.word}\\b`, 'i').test(text));
+
+            if (found) {
+                messageEl.innerHTML = found.tip;
+                alertBox.classList.remove('hidden');
+            } else {
+                alertBox.classList.add('hidden');
+            }
+        }
+
+        function selectRasa(rasa, btnElement) {
+            appState.selectedRasa = rasa;
+            document.querySelectorAll('.rasa-btn').forEach(btn => {
+                btn.classList.remove('border-sage-600', 'bg-sage-100/80', 'ring-2', 'ring-sage-500/30');
+                btn.classList.add('border-cream-200', 'bg-cream-50/50');
+            });
+            btnElement.classList.remove('border-cream-200', 'bg-cream-50/50');
+            btnElement.classList.add('border-sage-600', 'bg-sage-100/80', 'ring-2', 'ring-sage-500/30');
+        }
+
+        function save3REntry() {
+            const ragaChecked = Array.from(document.querySelectorAll('.raga-check:checked')).map(cb => cb.value);
+            const rasioText = document.getElementById('rasioInput').value.trim();
+            const coherence = document.getElementById('coherenceSlider').value;
+
+            if (!rasioText && !appState.selectedRasa && ragaChecked.length === 0) {
+                showToast('Isi minimal satu bagian dari Raga, Rasio, atau Rasa sebelum menyimpan.', 'amber');
+                return;
+            }
+
+            const entry = {
+                id: Date.now(),
+                type: '3R',
+                dateISO: new Date().toISOString().split('T')[0],
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+                thinkHarder: appState.thinkHarderActive,
+                raga: ragaChecked,
+                rasio: rasioText || '(Fokus menjaga ketenangan)',
+                rasa: appState.selectedRasa || 'Berproses',
+                coherence: Number(coherence)
+            };
+
+            appState.entries.unshift(entry);
+            saveToStorage();
+
+            // Reset formulir
+            document.querySelectorAll('.raga-check').forEach(cb => cb.checked = false);
+            document.getElementById('rasioInput').value = '';
+            document.getElementById('blockerWordAlert').classList.add('hidden');
+            appState.selectedRasa = '';
+            document.querySelectorAll('.rasa-btn').forEach(btn => {
+                btn.classList.remove('border-sage-600', 'bg-sage-100/80', 'ring-2', 'ring-sage-500/30');
+                btn.classList.add('border-cream-200', 'bg-cream-50/50');
+            });
+
+            showToast('Penyelarasan 3R tersimpan! Raga, Rasio, dan Rasamu semakin selaras.', 'sage');
+        }
+
+        // =========================================================================
+        // 6. FITUR CATATAN "ULANGAN & PEMBERIAN MAKNA"
+        // =========================================================================
+        function selectContext(ctx, btnElement) {
+            appState.selectedContext = ctx;
+            document.querySelectorAll('.ctx-btn').forEach(btn => {
+                btn.className = 'ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-cream-200 bg-cream-50 text-slate-600 hover:border-sage-400 transition';
+            });
+            btnElement.className = 'ctx-btn px-3.5 py-2 rounded-xl text-xs font-medium border border-sage-500 bg-sage-50 text-sage-800 transition';
+        }
+
+        function selectPattern(pattern, btnElement) {
+            appState.selectedPattern = pattern;
+            document.querySelectorAll('.pattern-btn').forEach(btn => {
+                btn.classList.remove('border-sage-600', 'bg-sage-50/80', 'ring-2', 'ring-sage-500/20');
+                btn.classList.add('border-cream-200', 'bg-cream-50/50');
+            });
+            btnElement.classList.remove('border-cream-200', 'bg-cream-50/50');
+            btnElement.classList.add('border-sage-600', 'bg-sage-50/80', 'ring-2', 'ring-sage-500/20');
+        }
+
+        function saveUlanganEntry() {
+            const eventText = document.getElementById('ulanganEvent').value.trim();
+            const meaningText = document.getElementById('ulanganMeaning').value.trim();
+
+            if (!eventText || !meaningText) {
+                showToast('Tuliskan kejadian objektif dan makna baru dari hatimu.', 'amber');
+                return;
+            }
+
+            const entry = {
+                id: Date.now(),
+                type: 'ULANGAN',
+                dateISO: new Date().toISOString().split('T')[0],
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+                thinkHarder: appState.thinkHarderActive,
+                context: appState.selectedContext,
+                eventData: eventText,
+                pattern: appState.selectedPattern || 'Menyadari & belajar dari ulangan',
+                newMeaning: meaningText
+            };
+
+            appState.entries.unshift(entry);
+            saveToStorage();
+
+            document.getElementById('ulanganEvent').value = '';
+            document.getElementById('ulanganMeaning').value = '';
+            appState.selectedPattern = '';
+            document.querySelectorAll('.pattern-btn').forEach(btn => {
+                btn.classList.remove('border-sage-600', 'bg-sage-50/80', 'ring-2', 'ring-sage-500/20');
+                btn.classList.add('border-cream-200', 'bg-cream-50/50');
+            });
+
+            showToast('Catatan Ulangan tersimpan. Kamu baru saja memberi makna baru sebagai Orang Baru!', 'sage');
+        }
+
+        // =========================================================================
+        // 7. FITUR RITUAL TIDUR & NIAT BANGUN PAGI
+        // =========================================================================
+        function saveSleepRitual() {
+            const g1 = document.getElementById('gratitude1').value.trim();
+            const g2 = document.getElementById('gratitude2').value.trim();
+            const g3 = document.getElementById('gratitude3').value.trim();
+            const release = document.getElementById('releaseLoad').value.trim();
+
+            const gratitudes = [g1, g2, g3].filter(Boolean);
+
+            if (gratitudes.length === 0 && !release) {
+                showToast('Tuliskan minimal satu hal yang disyukuri atau beban yang dilepaskan.', 'amber');
+                return;
+            }
+
+            const entry = {
+                id: Date.now(),
+                type: 'TIDUR',
+                dateISO: new Date().toISOString().split('T')[0],
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+                gratitudes: gratitudes,
+                releaseLoad: release || 'Menyerahkan seluruh urusan dengan ikhlas.'
+            };
+
+            appState.entries.unshift(entry);
+            saveToStorage();
+
+            document.getElementById('gratitude1').value = '';
+            document.getElementById('gratitude2').value = '';
+            document.getElementById('gratitude3').value = '';
+            document.getElementById('releaseLoad').value = '';
+
+            showToast('Ritual pengantar tidur tersimpan. Selamat beristirahat dengan hati lapang.', 'sage');
+        }
+
+        function saveMorningRitual() {
+            const intention = document.getElementById('morningIntention').value.trim();
+
+            if (!intention) {
+                showToast('Tuliskan kalimat kesadaran atau niat pagimu terlebih dahulu.', 'amber');
+                return;
+            }
+
+            const entry = {
+                id: Date.now(),
+                type: 'PAGI',
+                dateISO: new Date().toISOString().split('T')[0],
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+                intention: intention
+            };
+
+            appState.entries.unshift(entry);
+            saveToStorage();
+
+            document.getElementById('morningIntention').value = '';
+            showToast('Niat bangun pagi ditetapkan. Selamat menjalani hari sebagai Sahabat Jiwa!', 'sage');
+        }
+
+        // =========================================================================
+        // 8. VISUALISASI PROGRES "FERMENTASI JIWA" 40 HARI & ARSIP JURNAL
+        // =========================================================================
+        function renderFermentationProgress() {
+            const uniqueDates = new Set(appState.entries.map(e => e.dateISO));
+            const dayCount = uniqueDates.size;
+
+            document.getElementById('uniqueDaysCount').textContent = dayCount;
+            document.getElementById('headerDayCount').textContent = Math.max(1, dayCount);
+            document.getElementById('totalEntriesCount').textContent = appState.entries.length;
+
+            const grid = document.getElementById('fermentationGrid');
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= 40; i++) {
+                const cell = document.createElement('div');
+                const isCompleted = i <= dayCount;
+                cell.className = isCompleted
+                    ? 'aspect-square rounded-xl bg-sage-600 text-white flex items-center justify-center text-xs font-semibold shadow-sm transition'
+                    : 'aspect-square rounded-xl bg-cream-100 border border-cream-200 text-slate-400 flex items-center justify-center text-xs';
+                cell.textContent = i;
+                cell.title = isCompleted ? `Hari ke-${i}: Ragi kesadaran aktif` : `Hari ke-${i}`;
+                grid.appendChild(cell);
+            }
+        }
+
+        function renderJournalList() {
+            const container = document.getElementById('journalListContainer');
+            const query = document.getElementById('searchJournalInput').value.toLowerCase().trim();
+            const filterType = document.getElementById('filterTypeSelect').value;
+
+            const filtered = appState.entries.filter(entry => {
+                if (filterType !== 'ALL' && entry.type !== filterType) return false;
+                if (!query) return true;
+                const serialized = JSON.stringify(entry).toLowerCase();
+                return serialized.includes(query);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 px-4 rounded-2xl bg-cream-50 border border-dashed border-cream-200">
+                        <i class="fa-solid fa-seedling text-2xl text-sage-500/60 mb-2"></i>
+                        <p class="text-sm font-medium text-slate-600">Belum ada catatan yang ditemukan</p>
+                        <p class="text-xs text-slate-400 mt-1">Mulai dari penyelarasan 3R atau catatan ulangan hari ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(entry => {
+                let badgeHtml = '';
+                let bodyHtml = '';
+
+                if (entry.type === '3R') {
+                    badgeHtml = `<span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-sage-100 text-sage-800">Selaras 3R • Rasa: ${escapeHtml(entry.rasa)} (${entry.coherence}/10)</span>`;
+                    const ragaStr = entry.raga && entry.raga.length ? entry.raga.join(', ') : 'Belum dicentang';
+                    bodyHtml = `
+                        <p class="text-xs text-slate-500"><strong class="text-slate-700">Raga:</strong> ${escapeHtml(ragaStr)}</p>
+                        <p class="text-xs sm:text-sm text-slate-800 mt-1"><strong class="text-sage-800">Niat & Fokus:</strong> ${escapeHtml(entry.rasio)}</p>
+                    `;
+                } else if (entry.type === 'ULANGAN') {
+                    badgeHtml = `<span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amberwarm-100 text-amberwarm-600">Ulangan • ${escapeHtml(entry.context)}</span>`;
+                    bodyHtml = `
+                        <p class="text-xs text-slate-600"><strong class="text-slate-700">Data Kejadian:</strong> ${escapeHtml(entry.eventData)}</p>
+                        <p class="text-xs text-slate-500 mt-1"><em>${escapeHtml(entry.pattern)}</em></p>
+                        <div class="mt-2 p-2.5 rounded-xl bg-sage-50 border border-sage-200/70 text-xs sm:text-sm text-sage-800">
+                            <strong>Makna Hati:</strong> "${escapeHtml(entry.newMeaning)}"
+                        </div>
+                    `;
+                } else if (entry.type === 'TIDUR') {
+                    badgeHtml = `<span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-amberwarm-400">Ritual Pengantar Tidur</span>`;
+                    const gList = entry.gratitudes && entry.gratitudes.length 
+                        ? `<ul class="list-disc list-inside text-xs text-slate-700 space-y-0.5">${entry.gratitudes.map(g => `<li>${escapeHtml(g)}</li>`).join('')}</ul>` 
+                        : '';
+                    bodyHtml = `
+                        ${gList}
+                        <p class="text-xs text-slate-600 mt-1.5"><strong class="text-slate-800">Pelepasan Ikhlas:</strong> ${escapeHtml(entry.releaseLoad)}</p>
+                    `;
+                } else if (entry.type === 'PAGI') {
+                    badgeHtml = `<span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amberwarm-100 text-amberwarm-600">Niat Bangun Pagi</span>`;
+                    bodyHtml = `<p class="text-xs sm:text-sm text-slate-800 italic">"${escapeHtml(entry.intention)}"</p>`;
+                }
+
+                const thBadge = entry.thinkHarder 
+                    ? `<span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-heart mr-1"></i>Think Harder</span>` 
+                    : '';
+
+                return `
+                    <article class="p-4 rounded-2xl border border-cream-200 bg-cream-50/40 hover:bg-white transition space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                ${badgeHtml}
+                                ${thBadge}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[11px] text-slate-400">${escapeHtml(entry.timestamp)}</span>
+                                <button onclick="deleteEntry(${entry.id})" title="Hapus catatan" class="text-slate-400 hover:text-rose-500 transition p-1">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pt-1">${bodyHtml}</div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function deleteEntry(id) {
+            appState.entries = appState.entries.filter(e => e.id !== id);
+            saveToStorage();
+            showToast('Catatan telah dihapus dari arsip.', 'sage');
+        }
+
+        // =========================================================================
+        // 9. EKSPOR & IMPOR DATA JSON (BACKUP LOKAL)
+        // =========================================================================
+        function exportDataJSON() {
+            if (appState.entries.length === 0) {
+                showToast('Belum ada catatan untuk diekspor.', 'amber');
+                return;
+            }
+            const dataStr = JSON.stringify({
+                app: 'Jurnal Perjalanan Jiwa',
+                exportedAt: new Date().toISOString(),
+                entries: appState.entries
+            }, null, 2);
+
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `jurnal-perjalanan-jiwa-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast('Arsip jurnal berhasil diekspor ke file JSON.', 'sage');
+        }
+
+        function importDataJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && Array.isArray(imported.entries)) {
+                        // Gabungkan tanpa duplikasi ID
+                        const existingIds = new Set(appState.entries.map(item => item.id));
+                        const newItems = imported.entries.filter(item => !existingIds.has(item.id));
+                        appState.entries = [...newItems, ...appState.entries].sort((a, b) => b.id - a.id);
+                        saveToStorage();
+                        showToast(`Berhasil mengimpor ${newItems.length} catatan baru!`, 'sage');
+                    } else {
+                        showToast('Format file JSON tidak sesuai dengan Jurnal Perjalanan Jiwa.', 'amber');
+                    }
+                } catch (err) {
+                    showToast('Gagal membaca file JSON. Pastikan file tidak rusak.', 'amber');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // Utilitas keamanan XSS untuk teks input pengguna
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch((err) => {
+        console.warn('ServiceWorker gagal didaftarkan:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
