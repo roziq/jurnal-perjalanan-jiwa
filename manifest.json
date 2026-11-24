@@ -1,0 +1,19 @@
+{
+  "name": "Jurnal Perjalanan Jiwa",
+  "short_name": "Jurnal Jiwa",
+  "description": "Catatan harian dan latihan kesadaran diri berbasis konsep Quantum Ikhlas & Quantum Rasa.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8faf9",
+  "theme_color": "#065f46",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23065f46'/%3E%3Ccircle cx='256' cy='256' r='130' fill='none' stroke='%23a7f3d0' stroke-width='24'/%3E%3Ccircle cx='256' cy='256' r='52' fill='%23ffffff'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
